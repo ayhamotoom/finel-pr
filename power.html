@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>عرض مشروع التخرج - دعم استوديوهات الألعاب الأردنية</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo&display=swap" rel="stylesheet" />
+<style>
+  /* reset */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  body {
+    font-family: 'Cairo', sans-serif;
+    background: linear-gradient(135deg, #121212 0%, #1f1f1f 100%);
+    color: #fff;
+    direction: rtl;
+    line-height: 1.6;
+    min-height: 100vh;
+    padding: 20px;
+    overflow-x: hidden;
+  }
+  header {
+    background-color: #1c1c1c;
+    padding: 25px 30px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.8);
+    margin-bottom: 50px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  header h1 {
+    color: #ff9800;
+    font-size: 3rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    position: relative;
+    z-index: 2;
+    animation: glowText 3s ease-in-out infinite alternate;
+  }
+  /* هالة ضوئية متحركة */
+  @keyframes glowText {
+    0% { text-shadow: 0 0 5px #ff9800, 0 0 10px #ff9800; }
+    100% { text-shadow: 0 0 20px #ffb74d, 0 0 30px #ffb74d; }
+  }
+  /* خطوط خلفية متحركة */
+  header::before, header::after {
+    content: "";
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    top: -50%;
+    left: -50%;
+    background: radial-gradient(circle at center, #ff9800aa 20%, transparent 70%);
+    animation: rotateBg 15s linear infinite;
+    opacity: 0.1;
+    z-index: 1;
+    border-radius: 50%;
+  }
+  header::after {
+    animation-direction: reverse;
+  }
+  @keyframes rotateBg {
+    0% { transform: rotate(0deg) translate(0,0); }
+    100% { transform: rotate(360deg) translate(0,0); }
+  }
+
+  section {
+    max-width: 900px;
+    margin: 0 auto 50px;
+    background-color: #222222cc;
+    padding: 30px 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(255, 152, 0, 0.3);
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.7s ease-out;
+  }
+  section.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  section:not(:last-child) {
+    margin-bottom: 40px;
+  }
+  section h2 {
+    color: #ff9800;
+    font-size: 2.3rem;
+    margin-bottom: 25px;
+    border-bottom: 3px solid #ff9800;
+    padding-bottom: 10px;
+    letter-spacing: 1.2px;
+    position: relative;
+  }
+  /* خط متحرك تحت العنوان */
+  section h2::after {
+    content: "";
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 0%;
+    height: 3px;
+    background: linear-gradient(90deg, #ff9800, #ffd54f);
+    animation: underlineExpand 1.2s forwards ease-out;
+    animation-delay: 0.3s;
+  }
+  section.visible h2::after {
+    width: 100%;
+  }
+  @keyframes underlineExpand {
+    from { width: 0; }
+    to { width: 100%; }
+  }
+  section p, section ul {
+    font-size: 1.25rem;
+    color: #ddd;
+    margin-bottom: 20px;
+  }
+  ul {
+    list-style: inside disc;
+    margin-right: 15px;
+  }
+  ul li {
+    margin-bottom: 10px;
+  }
+
+  /* تحسين مكان الصور باستخدام Grid */
+  .image-container {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    justify-items: center;
+  }
+  .image-container img {
+    width: 100%;
+    max-width: 280px;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: 15px;
+    box-shadow: 0 8px 24px rgba(255, 152, 0, 0.6);
+    opacity: 0;
+    transform: scale(0.85);
+    transition: opacity 0.6s ease, transform 0.4s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+  }
+  .image-container img.visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .image-container img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 30px rgba(255, 152, 0, 0.9);
+  }
+
+  /* زر العودة للأعلى */
+  #backToTop {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    background-color: #ff9800;
+    color: #121212;
+    padding: 14px 22px;
+    border-radius: 50px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 0 15px #ff9800cc;
+    border: none;
+    transition: background-color 0.3s;
+    display: none;
+    z-index: 1000;
+  }
+  #backToTop:hover {
+    background-color: #e68900;
+  }
+
+  /* responsive */
+  @media (max-width: 768px) {
+    section {
+      padding: 20px 25px;
+      margin: 20px 10px;
+    }
+    header h1 {
+      font-size: 2rem;
+    }
+    section h2 {
+      font-size: 1.8rem;
+    }
+    section p, section ul {
+      font-size: 1.1rem;
+    }
+    .image-container img {
+      max-width: 100%;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>دعم الاستوديوهات المحلية الأردنية المتخصصة بالألعاب الرقمية</h1>
+</header>
+
+<section>
+  <h2>مقدمة / فكرة المشروع</h2>
+  <p>في الأردن، هناك العديد من الاستوديوهات المحلية الموهوبة في تطوير الألعاب الرقمية، لكنها تواجه صعوبات في الوصول للأسواق العالمية بسبب ضعف الترويج وقلة الموارد.</p>
+  <p>هدف المشروع هو إنشاء منصة أو نظام يدعم هذه الاستوديوهات عبر تسهيل عرض ألعابهم، تسويقها، وربطهم مع اللاعبين والمستثمرين العالميين.</p>
+  <div class="image-container">
+    <img src="images/99.png" alt="فكرة المشروع" />
+  </div>
+</section>
+
+<section>
+  <h2>أهداف المشروع</h2>
+  <ul>
+    <li>تمكين الاستوديوهات الأردنية من عرض ألعابهم بشكل احترافي على مستوى عالمي.</li>
+    <li>تسهيل عملية التواصل بين مطوري الألعاب والمستخدمين والمستثمرين في الخارج.</li>
+    <li>رفع الوعي بالقدرات المحلية في مجال الألعاب الرقمية.</li>
+  </ul>
+ 
+</section>
+
+<section>
+  <h2>التقنيات واللغات المستخدمة</h2>
+  <ul>
+    <li><strong>لغات البرمجة:</strong> HTML, CSS, JavaScript لتصميم وتطوير واجهة المستخدم.</li>
+    <li><strong>Backend:</strong> Java أو js لتطوير الخادم.</li>
+    <li><strong>قاعدة البيانات:</strong> MySQL  لتخزين البيانات.</li>
+    <li><strong>أدوات إضافية:</strong> Html, Css لتصميم واجهة سهلة وجذابة، و Vue.js لتحسين تجربة المستخدم.</li>
+    <li><em>تم اختيار هذه التقنيات بسبب شيوعها، سهولة التعلم، ودعمها لتطوير تطبيقات متكاملة وقابلة للتوسع.</em></li>
+  </ul>
+  <div class="image-container">
+    <img src="images/66.png" alt="التقنيات" />
+  </div>
+</section>
+
+<section>
+  <h2>مميزات المشروع</h2>
+  <ul>
+    <li>واجهة مستخدم بسيطة وسلسة تساعد المستخدمين على تصفح الألعاب بسهولة.</li>
+    <li>دعم عرض ألعاب الاستوديوهات بشكل احترافي مع وصف ومقاطع فيديو وصور.</li>
+    <li>نظام تقييم ومراجعات لتشجيع التفاعل بين المستخدمين.</li>
+    <li>إمكانية التواصل بين المطورين والمستخدمين أو المستثمرين.</li>
+  </ul>
+  <div class="image-container">
+    <img src="images/Screenshot 2025-05-22 092736.png" alt="مميزات المشروع" />
+  </div>
+</section>
+
+<section>
+  <h2>التحديات والصعوبات</h2>
+  <ul>
+    <li>الحصول على محتوى غني ومتنوع من الاستوديوهات المحلية.</li>
+    <li>ضمان سرعة وأداء عاليين للمنصة مع عدد متزايد من المستخدمين.</li>
+    <li>توفير واجهة مستخدم تلائم مختلف الأجهزة والمتصفحات.</li>
+  </ul>
+  <div class="image-container">
+    <img src="images/Screenshot 2025-05-22 221952.png" alt="التحديات" />
+  </div>
+</section>
+
+<section>
+  <h2>الخاتمة والتوصيات المستقبلية</h2>
+  <p>المشروع خطوة مهمة لدعم صناعة الألعاب الأردنية والوصول بها للعالمية.</p>
+  <p>يمكن في المستقبل إضافة خصائص مثل المتجر الإلكتروني، دعم اللغات المتعددة، وتطوير تطبيق موبايل.</p>
+ 
+</section>
+
+<button id="backToTop" title="العودة للأعلى">↑</button>
+
+<script>
+  // عرض الأقسام عند التمرير للداخل (تأثير ظهور)
+  function isInViewport(element) {
+    const rect = element.getBoundingClientRect();
+    return (
+      rect.top <= (window.innerHeight || document.documentElement.clientHeight) - 100
+    );
+  }
+  function revealSections() {
+    const sections = document.querySelectorAll('section');
+    sections.forEach(sec => {
+      if (isInViewport(sec)) {
+        sec.classList.add('visible');
+        // ظهور الصور داخل القسم بعد ظهور القسم
+        sec.querySelectorAll('img').forEach(img => {
+          img.classList.add('visible');
+        });
+      }
+    });
+  }
+  window.addEventListener('scroll', revealSections);
+  window.addEventListener('load', revealSections);
+
+  // زر العودة للأعلى
+  const backToTopBtn = document.getElementById('backToTop');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) {
+      backToTopBtn.style.display = 'block';
+    } else {
+      backToTopBtn.style.display = 'none';
+    }
+  });
+  backToTopBtn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
+
+</body>
+</html>
