@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>Falcon Store - تواصل معنا</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+<style>
+.contact-container {
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	gap: 20px;
+	padding: 40px 20px;
+}
+
+.contact-info, .map-section {
+	background-color: #1c1c1c;
+	border-radius: 10px;
+	padding: 20px;
+	flex: 1 1 300px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.contact-info h2, .map-section h2 {
+	color: #ff9800;
+}
+
+.contact-info a {
+	color: #ff9800;
+	text-decoration: none;
+}
+
+.contact-info a:hover {
+	color: #e68900;
+}
+
+.social-links {
+	margin-top: 20px;
+}
+
+.social-links a {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	margin: 10px 0;
+	color: #ff9800;
+	text-decoration: none;
+}
+
+.social-links img {
+	width: 24px;
+	height: 24px;
+}
+</style>
+</head>
+<body>
+
+	<header>
+		<div class="logo">
+			<h1 class="Falcon">
+				<a href="home" id="Falcon">Falcon</a>
+			</h1>
+			<p>دعم الألعاب المحلية للعالمية</p>
+		</div>
+	<nav class="navbar">
+  <ul>
+    <li><a href="home" data-lang="home">الرئيسية</a></li>
+    <li><a href="Newgames" data-lang="games">الألعاب</a></li>
+    <li><a href="about" data-lang="about">عن المتجر</a></li>
+    <li><a href="contact" data-lang="contact">اتصل بنا</a></li>
+    <li class="dropdown">
+      <a href="addUser" data-lang="settings">الإعدادات</a>
+      <div class="dropdown-content">
+        <a href="addUser" data-lang="addUser">اضافة مستخدم</a>
+        <a href="add-game" data-lang="addGame">اضافة لعبة</a>
+        <a href="addRules" data-lang="addRules">اضافة قواعد</a>
+      </div>
+    </li>
+  </ul>
+</nav>
+		<form action="/action_page.php" method="get">
+			<input type="text" id="search" placeholder="ابحث عن لعبتك المفضلة...">
+			<button class="search-btn">بحث</button>
+		</form>
+		<select id="langSelect">
+  <option value="ar">العربية</option>
+  <option value="en">English</option>
+</select>
+
+	</header>
+
+	<div class="contact-container">
+		<div class="contact-info">
+			<h2>معلومات الاتصال</h2>
+			<p>
+				📞 الهاتف: <a href="tel:+962777280231">+962777280231</a>
+			</p>
+			<p>
+				✉️ البريد الإلكتروني: <a href="mailto:ayham.a.atoom@gmail.com">ayham.a.atoom@gmail.com</a>
+			</p>
+			<div class="social-links">
+				<h3>تابعنا على:</h3>
+				<a href="https://www.facebook.com/" target="_blank"><img
+					src="https://cdn-icons-png.flaticon.com/512/733/733547.png">
+					فيسبوك</a><br> <a href="https://www.instagram.com/"
+					target="_blank"><img
+					src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png">
+					انستغرام</a><br> <a href="https://twitter.com/" target="_blank"><img
+					src="https://cdn-icons-png.flaticon.com/512/733/733579.png">
+					تويتر</a><br> <a href="https://wa.me/962777280231" target="_blank"><img
+					src="https://cdn-icons-png.flaticon.com/512/733/733585.png">
+					واتساب</a>
+			</div>
+		</div>
+		<div class="map-section">
+			<h2>موقعنا</h2>
+			<iframe src="https://www.google.com/maps/embed?pb=..." width="100%"
+				height="250" style="border: 0; border-radius: 10px;"
+				allowfullscreen="" loading="lazy"></iframe>
+		</div>
+	</div>
+
+	<a class="donate-btn" href="https://www.paypal.com/donate"
+		target="_blank">ادعم المتجر</a>
+
+	<footer>
+		<p>&copy; 2025 Falcon. جميع الحقوق محفوظة.</p>
+	</footer>
+
+	<!-- زر دردشة مميز -->
+	<button id="chat-button" onclick="toggleChat()">
+		<!-- SVG يمثل حرف F بطريقة شعار -->
+		<svg viewBox="0 0 100 100">
+        <text x="50%" y="60%" text-anchor="middle" fill="white"
+				font-size="50" font-family="Arial" font-weight="bold">F</text>
+    </svg>
+	</button>
+
+	<!-- صندوق الدردشة -->
+	<div id="chat-box">
+		<div id="chat-header">الدردشة المباشرة</div>
+		<div id="chat-messages"></div>
+		<div id="chat-input">
+			<input type="text" id="message-input" placeholder="اكتب رسالتك...">
+			<button onclick="sendMessage()">إرسال</button>
+		</div>
+	</div>
+
+	<script>
+    function toggleChat() {
+    const chatBox = document.getElementById('chat-box');
+    chatBox.style.display = chatBox.style.display === 'flex' ? 'none' : 'flex';
+}
+
+function sendMessage() {
+    const input = document.getElementById('message-input');
+    const message = input.value.trim();
+    if (message !== '') {
+        const messages = document.getElementById('chat-messages');
+
+        const userMessage = document.createElement('div');
+        userMessage.className = 'message user';
+        userMessage.textContent = message;
+        messages.appendChild(userMessage);
+
+        const botReply = document.createElement('div');
+        botReply.className = 'message';
+        botReply.textContent = 'شكراً لتواصلك معنا! سنرد عليك قريباً.';
+        setTimeout(() => messages.appendChild(botReply), 500);
+
+        messages.scrollTop = messages.scrollHeight;
+        input.value = '';
+    }
+}
+</script>
+<script>
+    // تحميل الترجمات من ملف JSON
+    fetch('translations.json')
+      .then(response => response.json())
+      .then(translations => {
+        const langSelect = document.getElementById("langSelect");
+
+        // عند تغيير اللغة من القائمة
+        langSelect.addEventListener("change", function() {
+          const selectedLang = langSelect.value;
+          translatePage(selectedLang, translations);
+        });
+
+        // الترجمة الافتراضية عند تحميل الصفحة
+        translatePage(langSelect.value, translations);
+
+        // وظيفة لترجمة النصوص في الصفحة
+        function translatePage(lang, translations) {
+          document.querySelectorAll('[data-lang]').forEach(function(element) {
+            const key = element.getAttribute('data-lang');
+            if (translations[lang] && translations[lang][key]) {
+              element.textContent = translations[lang][key];
+            }
+          });
+        }
+      })
+      .catch(error => console.log('Error loading JSON:', error));
+ // ترجمة placeholder
+    document.querySelectorAll('[data-lang-placeholder]').forEach(function(element) {
+      const key = element.getAttribute('data-lang-placeholder');
+      if (translations[lang] && translations[lang][key]) {
+        element.placeholder = translations[lang][key];
+      }
+    });
+
+    </script>
+</body>
+</html>

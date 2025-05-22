@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>User Management</title>
+</head>
+<body>
+	<h1>User Management</h1>
+
+	<h2>Add / Edit User</h2>
+	<form th:action="@{/users/save}" th:object="${user}" method="post">
+		<input type="hidden" th:field="*{userId}" /> <label>Name:</label> <input
+			type="text" th:field="*{nameEn}" required /><br /> <label>Email:</label>
+		<input type="email" th:field="*{email}" required /><br /> <label>Phone:</label>
+		<input type="text" th:field="*{phone}" /><br /> <label>Username:</label>
+		<input type="text" th:field="*{username}" required /><br /> <label>Password:</label>
+		<input type="password" th:field="*{password}" required /><br />
+
+		<button type="submit">Save</button>
+	</form>
+
+	<h2>All Users</h2>
+	<table border="1">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>Name</th>
+				<th>Email</th>
+				<th>Username</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="user : ${users}">
+				<td th:text="${user.userId}"></td>
+				<td th:text="${user.nameEn}"></td>
+				<td th:text="${user.email}"></td>
+				<td th:text="${user.username}"></td>
+				<td><a th:href="@{'/users/edit/' + ${user.userId}}">Edit</a> |
+					<a th:href="@{'/users/delete/' + ${user.userId}}"
+					onclick="return confirm('Are you sure?')">Delete</a></td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

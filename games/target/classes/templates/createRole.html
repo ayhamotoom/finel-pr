@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Role Management</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<script>
+	function openCreatePopup() {
+		document.getElementById("editRoleId").value = "";
+		document.getElementById("editname").value = "";
+		document.getElementById("editPopup").style.display = "flex";
+		document.getElementById("addRoleBtn").style.display = "block";
+		document.getElementById("saveRoleBtn").style.display = "none";
+	}
+
+	function openEditPopup(roleId, name) {
+		document.getElementById("editRoleId").value = roleId;
+		document.getElementById("editname").value = name;
+		document.getElementById("editPopup").style.display = "flex";
+		document.getElementById("addRoleBtn").style.display = "none";
+		document.getElementById("saveRoleBtn").style.display = "block";
+	}
+
+	function closeEditPopup() {
+		document.getElementById("editPopup").style.display = "none";
+	}
+</script>
+</head>
+<body>
+
+	<header>
+		<div class="logo">
+			<h1 class="Falcon">
+				<a href="home.html" id="Falcon">Falcon</a>
+			</h1>
+			<p id="paragrph">دعم الألعاب المحلية للعالمية</p>
+		</div>
+		<nav class="navbar">
+			<ul>
+				<li><a href="home">الرئيسية</a></li>
+				<li><a href="Newgames">الألعاب</a></li>
+				<li><a href="#" onclick="openAboutDialog()">عن المتجر</a></li>
+				<li><a href="#" onclick="openContactDialog()">اتصل بنا</a></li>
+				<li class="dropdown"><a href="#">الإعدادت <i
+						class="fas fa-caret-down"></i></a>
+					<div class="dropdown-content">
+						<a href="addUser">اضافة مستخدم</a> <a href="addGame">اضافة
+							لعبة</a> <a href="addRules">اضافة قواعد</a>
+					</div></li>
+			</ul>
+		</nav>
+
+		<form action="/action_page.php" method="get">
+			<input type="text" id="searchInput" placeholder="ابحث هنا..."
+				onkeyup="showSuggestions(this.value)">
+			<div id="suggestions"></div>
+		</form>
+
+		<p data-lang-ar="مرحبا بك في فالكُن" data-lang-en="Welcome to Falcon">مرحبا
+			بك في فالكُن</p>
+		<select id="langSelect" class="dropdown">
+			<option value="ar">العربية</option>
+			<option value="en">English</option>
+		</select>
+	</header>
+
+	<main>
+		<h2>Role Management</h2>
+		<button class="btn" onclick="openCreatePopup()">
+			<i class="fas fa-plus"></i> Create Role
+		</button>
+
+		<table>
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Role Name</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="role : ${roles}">
+					<td th:text="${role.roleId}"></td>
+					<td th:text="${role.name}"></td>
+					<td>
+						<button class="action-btn edit"
+							th:attr="onclick=|openEditPopup('${role.roleId}', '${role.name}')|">
+							<i class="fas fa-edit"></i> Edit
+						</button> <a th:href="@{'/roles/delete/' + ${role.roleId}}"
+						onclick="return confirm('Are you sure?')"
+						class="action-btn delete"> <i class="fas fa-trash-alt"></i>
+							Delete
+					</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</main>
+
+	<!-- Popup Form -->
+	<div id="editPopup" class="popup">
+		<div class="popup-content">
+			<h2 id="popupTitle">Role Form</h2>
+			<form th:action="@{/roles/save}" method="post">
+				<input type="hidden" id="editRoleId" name="roleId" />
+
+				<div class="form-row">
+					<label>Role Name:</label> <input type="text" id="editname"
+						name="name" required />
+				</div>
+
+				<div class="form-actions">
+					<button type="submit" class="btn" id="addRoleBtn"
+						style="display: none;">
+						<i class="fas fa-plus"></i> Add Role
+					</button>
+					<button type="submit" class="btn" id="saveRoleBtn"
+						style="display: none;">
+						<i class="fas fa-save"></i> Save
+					</button>
+					<button type="button" class="btn cancel-btn"
+						onclick="closeEditPopup()">
+						<i class="fas fa-times"></i> Close
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<footer>
+		<p>&copy; 2025 Role Management System</p>
+	</footer>
+
+</body>
+</html>

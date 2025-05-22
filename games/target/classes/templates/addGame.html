@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إضافة لعبة وعرض تفاصيلها</title>
+    <style>
+        /* إعادة ضبط القيم الافتراضية */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #121212;
+            color: #fff;
+            font-family: sans-serif;
+            line-height: 1.5;
+            direction: rtl;
+        }
+
+        /* تحسين تنسيق الهيدر */
+        header {
+            background-color: #1c1c1c;
+            text-align: center;
+            padding: 15px 20px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        header h1 a {
+            font-size: 45px;
+            color: #ff9800;
+            text-decoration: none;
+            padding: 10px 15px;
+        }
+
+        header p {
+            font-size: 18px;
+            color: #fff;
+        }
+
+        /* تحسين تنسيق نموذج إضافة اللعبة */
+        #add-game {
+            padding: 50px 20px;
+            background-color: #333;
+            border-radius: 8px;
+            max-width: 600px;
+            margin: 50px auto;
+        }
+
+        #add-game h2 {
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            color: #ff9800;
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        form input,
+        form textarea {
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: none;
+            background-color: #444;
+            color: #fff;
+        }
+
+        form textarea {
+            resize: vertical;
+            height: 150px;
+        }
+
+        form button {
+            background-color: #ff9800;
+            padding: 12px;
+            border-radius: 5px;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
+        }
+
+        form button:hover {
+            background-color: #e68900;
+        }
+
+        /* تحسين قسم عرض تفاصيل اللعبة */
+        #game-details {
+            padding: 50px 20px;
+            background-color: #333;
+            max-width: 900px;
+            margin: 50px auto;
+            border-radius: 8px;
+            display: none; /* إخفاء القسم عند البداية */
+        }
+
+        #game-details h2 {
+            font-size: 2.5em;
+            color: #ff9800;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        #game-detail {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #game-detail img {
+            width: 300px;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .game-info {
+            flex: 1;
+            color: #fff;
+        }
+
+        .game-info h3 {
+            font-size: 2em;
+            color: #ff9800;
+            margin-bottom: 20px;
+        }
+
+        .game-info p {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        .rating {
+            font-size: 1.5em;
+            color: #ff9800;
+        }
+
+        footer {
+            background-color: #1c1c1c;
+            text-align: center;
+            padding: 20px;
+            font-size: 16px;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1><a href="">الألعاب</a>
+       </h1>
+        <p>إدارة الألعاب المحلية والعالمية</p>
+    </header>
+
+   
+    
+    <!-- قسم عرض تفاصيل اللعبة -->
+    <section id="add-game">
+    <h2>أضف لعبة جديدة</h2>
+    <form id="game-form" action="/addGame/create" method="post">
+        <input type="text" id="game-title" name="gameTitle" placeholder="اسم اللعبة" required>
+        <input type="text" id="game-type" name="gameType" placeholder="نوع اللعبة" required>
+        <textarea id="game-desc" name="gameDesc" placeholder="وصف اللعبة" required></textarea>
+        <input type="number" id="game-rating" name="gameRating" placeholder="تقييم مبدئي (1-5)" min="1" max="5" required>
+        <input type="text" id="game-image" name="gameImage" placeholder="رابط الصورة" required>
+        <button type="submit">إضافة اللعبة</button>
+    </form>
+</section>
+
+    <footer>
+        <p>&copy; 2025 Falcon. جميع الحقوق محفوظة.</p>
+    </footer>
+
+	<!--   <script>
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("game-form");
+    let games = JSON.parse(localStorage.getItem("games")) || [];
+
+    form.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const title = document.getElementById("game-title").value;
+        const type = document.getElementById("game-type").value;
+        const desc = document.getElementById("game-desc").value;
+        const rating = document.getElementById("game-rating").value;
+        const image = document.getElementById("game-image").value;
+
+        const newGame = { title, type, description: desc, rating, image };
+        games.push(newGame);
+        localStorage.setItem("games", JSON.stringify(games));
+
+        alert("تمت إضافة اللعبة بنجاح!");
+        window.location.href = "games.html";
+    });
+});
+
+</script> -->
+
+</body>
+</html>

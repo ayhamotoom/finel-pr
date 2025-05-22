@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Falcon - متجر الألعاب المحلية</title>
+<link rel="stylesheet" href="style.css">
+<style>
+
+
+
+#hero {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 60px 20px;
+	gap: 40px;
+	max-width: 1200px;
+	margin: 40px auto;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+	background-color: #1c1c1c;
+	border-radius: 10px;
+	direction: rtl;
+}
+
+.hero-content {
+	flex: 1;
+	text-align: right;
+}
+
+.hero-content h2 {
+	font-size: 3em;
+	margin-bottom: 20px;
+	color: #ff9800;
+}
+
+.hero-content p {
+	font-size: 1.4em;
+	margin-bottom: 30px;
+	line-height: 1.5;
+	color: #ddd;
+}
+
+.btn {
+	background-color: #ff9800;
+	color: #fff;
+	padding: 15px 35px;
+	border-radius: 5px;
+	text-decoration: none;
+	font-size: 1.2em;
+	transition: background-color 0.3s;
+	display: inline-block;
+}
+
+.btn:hover {
+	background-color: #e68900;
+}
+
+/* تعديل السلايدر */
+#game-slider {
+	flex: 1;
+	max-width: 500px;
+	height: 300px;
+	border-radius: 10px;
+	overflow: hidden;
+	box-shadow: 0 0 15px rgba(255, 152, 0, 0.6);
+	background-color: #121212;
+	position: relative;
+}
+
+#game-slider img {
+	position: relative; /* بدل absolute */
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	border-radius: 10px 10px 0 0;
+	user-select: none;
+	transition: opacity 0.7s ease-in-out;
+	opacity: 0;
+	pointer-events: none;
+	position: absolute;
+	/* رجعت absolute عشان الصور تتراكب بس نخلي opacity يتحكم في الظهور */
+	top: 0;
+	left: 0;
+}
+
+#game-slider img.active {
+	opacity: 1;
+	pointer-events: auto;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+#slider-caption {
+	background-color: #1c1c1c;
+	color: #ff9800;
+	padding: 15px;
+	text-align: center;
+	font-size: 1.1em;
+	font-weight: bold;
+	font-family: 'Cairo', sans-serif;
+	border-radius: 0 0 10px 10px;
+	position: relative;
+	z-index: 2;
+	user-select: none;
+}
+
+.donate-btn {
+	display: block;
+	text-align: center;
+	margin: 30px auto;
+	padding: 10px 20px;
+	background-color: #ff9800;
+	color: white;
+	border-radius: 8px;
+	text-decoration: none;
+	width: fit-content;
+	font-size: 1.1em;
+}
+
+.donate-btn:hover {
+	background-color: #e68900;
+}
+
+footer {
+	background-color: #1c1c1c;
+	text-align: center;
+	padding: 20px;
+	font-size: 0.9em;
+	color: #aaa;
+	margin-top: 60px;
+}
+
+#chat-button {
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	background-color: #ff9800;
+	border: none;
+	width: 60px;
+	height: 60px;
+	border-radius: 50%;
+	cursor: pointer;
+	box-shadow: 0 0 15px rgba(255, 152, 0, 0.5);
+	z-index: 1000;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	transition: background-color 0.3s;
+}
+
+#chat-button:hover {
+	background-color: #e68900;
+}
+
+#chat-button svg {
+	width: 30px;
+	height: 30px;
+	fill: white;
+}
+
+@media ( max-width : 900px) {
+	#hero {
+		flex-direction: column;
+		padding: 40px 20px;
+	}
+	#game-slider {
+		max-width: 100%;
+		height: 250px;
+		margin-top: 30px;
+		position: relative;
+	}
+	.hero-content {
+		text-align: center;
+	}
+}
+
+#searchInput {
+	width: 300px;
+	padding: 10px 15px;
+	font-size: 16px;
+	border: 2px solid #ccc;
+	border-radius: 8px;
+	outline: none;
+	transition: border-color 0.3s, box-shadow 0.3s;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+#searchInput:focus {
+	border-color: #4CAF50;
+	box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+}
+</style>
+</head>
+<body>
+	<header>
+		<div class="logo">
+			<h1 class="Falcon">
+				<a href="home.html" id="Falcon">Falcon</a>
+			</h1>
+			<p>دعم الألعاب المحلية للعالمية</p>
+		</div>
+		<nav class="navbar">
+			<ul>
+				<li><a href="home" data-lang="home">الرئيسية</a></li>
+				<li><a href="Newgames" data-lang="games">الألعاب</a></li>
+				<li><a href="about" data-lang="about">عن المتجر</a></li>
+				<li><a href="contact" data-lang="contact">اتصل بنا</a></li>
+				<li class="dropdown"><a href="addUser" data-lang="settings">الإعدادات</a>
+					<div class="dropdown-content">
+						<a href="addUser" data-lang="addUser">اضافة مستخدم</a> <a
+							href="addGame" data-lang="addGame">اضافة لعبة</a> <a
+							href="addRules" data-lang="addRules">اضافة قواعد</a>
+					</div></li>
+			</ul>
+		</nav>
+		<form action="/action_page.php" method="get">
+			<input type="text" id="search" placeholder="ابحث عن لعبتك المفضلة...">
+			<button class="search-btn">بحث</button>
+		</form>
+		<select id="language">
+			<option value="ar">العربية</option>
+			<option value="en">English</option>
+		</select>
+	</header>
+	<section id="hero">
+		<div class="hero-content">
+			<h2 data-lang="discover_local_games">اكتشف أفضل الألعاب المحلية</h2>
+			<p data-lang="falcon_help">نحن في Falcon نساعدك على اكتشاف وتجربة
+				ألعاب مبتكرة من المطورين المحليين</p>
+			<a href="games" class="btn" data-lang="discover_games">اكتشف
+				الألعاب</a>
+		</div>
+
+		<div id="game-slider">
+			<div id="slider-caption">جديدنا: لعبة مميزة قادمة!</div>
+			<div id="slider-images"></div>
+			<!-- Dynamic image container -->
+		</div>
+	</section>
+
+	<a class="donate-btn" href="https://www.paypal.com/donate"
+		target="_blank" data-lang="support_store"> ادعم المتجر </a>
+
+
+	
+
+
+
+	<script>
+    async function fetchSliderImages() {
+        try {
+            const response = await fetch("/addGame/sliderImages");
+            const imageUrls = await response.json();
+
+            const sliderImagesContainer = document.getElementById("slider-images");
+
+            imageUrls.forEach((url, index) => {
+                const img = document.createElement("img");
+                img.src = url;
+                img.alt = `Game Image ${index + 1}`;
+                img.className = index === 0 ? "active" : ""; // First image is active
+                sliderImagesContainer.appendChild(img);
+            });
+            setInterval(() => {
+                const images = document.querySelectorAll("#slider-images img");
+                let activeIndex = Array.from(images).findIndex(img => img.classList.contains("active"));
+                
+                images[activeIndex].classList.remove("active");
+                let nextIndex = (activeIndex + 1) % images.length;
+                images[nextIndex].classList.add("active");
+            }, 3000); // Change image every 3 seconds
+
+        } catch (error) {
+            console.error("Error loading slider images:", error);
+        }
+    }
+
+    fetchSliderImages();
+</script>
+
+	<footer>
+		<p>&copy; 2025 Falcon. جميع الحقوق محفوظة.</p>
+	</footer>
+
+	<script>
+    // تحميل الترجمات من ملف JSON
+    fetch('translations.json')
+      .then(response => response.json())
+      .then(translations => {
+        const langSelect = document.getElementById("langSelect");
+
+        // عند تغيير اللغة من القائمة
+        langSelect.addEventListener("change", function() {
+          const selectedLang = langSelect.value;
+          translatePage(selectedLang, translations);
+        });
+
+        // الترجمة الافتراضية عند تحميل الصفحة
+        translatePage(langSelect.value, translations);
+
+        // وظيفة لترجمة النصوص في الصفحة
+        function translatePage(lang, translations) {
+          document.querySelectorAll('[data-lang]').forEach(function(element) {
+            const key = element.getAttribute('data-lang');
+            if (translations[lang] && translations[lang][key]) {
+              element.textContent = translations[lang][key];
+            }
+          });
+        }
+      })
+      .catch(error => console.log('Error loading JSON:', error));
+ // ترجمة placeholder
+    document.querySelectorAll('[data-lang-placeholder]').forEach(function(element) {
+      const key = element.getAttribute('data-lang-placeholder');
+      if (translations[lang] && translations[lang][key]) {
+        element.placeholder = translations[lang][key];
+      }
+    });
+    function translatePage(lang, translations) {
+    	  document.querySelectorAll('[data-lang]').forEach(function(element) {
+    	    const key = element.getAttribute('data-lang');
+    	    if (translations[lang] && translations[lang][key]) {
+    	      element.textContent = translations[lang][key];
+    	    }
+    	  });
+
+    	  translatePlaceholders(lang, translations); // <-- مهم!
+    	}
+
+    	function translatePlaceholders(lang, translations) {
+    	  document.querySelectorAll('[data-lang-placeholder]').forEach(function(element) {
+    	    const key = element.getAttribute('data-lang-placeholder');
+    	    if (translations[lang] && translations[lang][key]) {
+    	      element.placeholder = translations[lang][key];
+    	    }
+    	  });
+    	}
+    </script>
+	<script>
+  const suggestionsList = [
+    "برمجة",
+    "بيانات",
+    "ذكاء اصطناعي",
+    "تصميم مواقع",
+    "HTML",
+    "CSS",
+    "JavaScript",
+    "React",
+    "Python",
+    "شبكات"
+  ];
+
+  const searchInput = document.getElementById("searchInput");
+  const suggestionsBox = document.getElementById("suggestions");
+
+  searchInput.addEventListener("input", function () {
+    showSuggestions(this.value);
+  });
+
+  function showSuggestions(inputValue) {
+    suggestionsBox.innerHTML = "";
+
+    if (inputValue.trim().length === 0) return;
+
+    const filtered = suggestionsList.filter(item =>
+      item.toLowerCase().includes(inputValue.toLowerCase())
+    );
+
+    filtered.forEach(item => {
+      const div = document.createElement("div");
+      div.innerText = item;
+      div.onclick = () => {
+        searchInput.value = item;
+        suggestionsBox.innerHTML = "";
+      };
+      div.style.cursor = "pointer";
+      div.style.padding = "8px 12px";
+      div.style.borderBottom = "1px solid #eee";
+      suggestionsBox.appendChild(div);
+    });
+  }
+</script>
+
+
+
+
+</body>
+</html>

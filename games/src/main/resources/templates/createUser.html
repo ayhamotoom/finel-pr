@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>User Management</title>
+<link rel="stylesheet" th:href="@{/style.css}">
+
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<script>
+	function openCreatePopup() {
+		document.getElementById("editUserId").value = "";
+		document.getElementById("editName").value = "";
+		document.getElementById("editEmail").value = "";
+		document.getElementById("editUsername").value = "";
+		document.getElementById("editPhone").value = "";
+
+		document.getElementById("editPopup").style.display = "flex";
+
+		document.getElementById("addUserBtn").style.display = "block";
+		document.getElementById("saveUserBtn").style.display = "none";
+	}
+
+	function openEditPopup(userId, nameEn, email, username, phone) {
+		document.getElementById("editUserId").value = userId;
+		document.getElementById("editName").value = nameEn;
+		document.getElementById("editEmail").value = email;
+		document.getElementById("editUsername").value = username;
+		document.getElementById("editPhone").value = phone;
+
+		document.getElementById("editPopup").style.display = "flex";
+
+		document.getElementById("addUserBtn").style.display = "none";
+		document.getElementById("saveUserBtn").style.display = "block";
+	}
+
+	function closeEditPopup() {
+		document.getElementById("editPopup").style.display = "none";
+	}
+</script>
+</head>
+<body>
+
+
+	<header>
+		<div class="logo">
+			<h1 class="Falcon">
+				<a href="home.html" id="Falcon">Falcon</a>
+			</h1>
+			<p>دعم الألعاب المحلية للعالمية</p>
+		</div>
+		<nav class="navbar">
+			<ul>
+				<li><a href="home" data-lang="home">الرئيسية</a></li>
+				<li><a href="Newgames" data-lang="games">الألعاب</a></li>
+				<li><a href="about" data-lang="about">عن المتجر</a></li>
+				<li><a href="contact" data-lang="contact">اتصل بنا</a></li>
+				<li class="dropdown"><a href="addUser" data-lang="settings">الإعدادات</a>
+					<div class="dropdown-content">
+						<a href="addUser" data-lang="addUser">اضافة مستخدم</a> <a
+							href="addGame" data-lang="addGame">اضافة لعبة</a> <a
+							href="addRules" data-lang="addRules">اضافة قواعد</a>
+					</div></li>
+			</ul>
+		</nav>
+		<form action="/action_page.php" method="get">
+			<input type="text" id="search" placeholder="ابحث عن لعبتك المفضلة...">
+			<button class="search-btn">بحث</button>
+		</form>
+		<select id="language">
+			<option value="ar">العربية</option>
+			<option value="en">English</option>
+		</select>
+	</header>
+
+	<main>
+		<h2>User Management</h2>
+		<button class="btn" onclick="openCreatePopup()">
+			<i class="fas fa-user-plus"></i> Create User
+		</button>
+
+		<table>
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Name</th>
+					<th>Email</th>
+					<th>Username</th>
+					<th>Phone</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="user : ${users}">
+					<td th:text="${user.userId}"></td>
+					<td th:text="${user.nameEn}"></td>
+					<td th:text="${user.email}"></td>
+					<td th:text="${user.username}"></td>
+					<td th:text="${user.phone}"></td>
+					<td>
+						<!-- Edit Button -->
+						<button class="action-btn edit"
+							th:attr="onclick=|openEditPopup('${user.userId}', '${user.nameEn}', '${user.email}', '${user.username}', '${user.phone}')|">
+							<i class="fas fa-edit"></i> Edit
+						</button> <!-- Delete Link --> <a
+						th:href="@{'/addUser/delete/' + ${user.userId}}"
+						onclick="return confirm('Are you sure?')"
+						class="action-btn delete"> <i class="fas fa-trash-alt"></i>
+							Delete
+					</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</main>
+
+	<!-- Popup Dialog -->
+	<div id="editPopup" class="popup">
+		<div class="popup-content">
+			<h2 id="popupTitle">User Form</h2>
+			<form th:action="@{/addUser/save}" method="post">
+				<input type="hidden" id="editUserId" name="userId" />
+
+				<div class="form-row">
+					<label>Name:</label> <input type="text" id="editName" name="nameEn"
+						required /> <label>Email:</label> <input type="email"
+						id="editEmail" name="email" required />
+				</div>
+
+				<div class="form-row">
+					<label>Phone:</label> <input type="text" id="editPhone"
+						name="phone" /> <label>Username:</label> <input type="text"
+						id="editUsername" name="username" required />
+				</div>
+
+				<div class="form-actions">
+					<button type="submit" class="btn" id="addUserBtn"
+						style="display: none;">
+						<i class="fas fa-user-plus"></i> Add User
+					</button>
+					<button type="submit" class="btn" id="saveUserBtn"
+						style="display: none;">
+						<i class="fas fa-save"></i> Save
+					</button>
+					<button type="button" class="btn cancel-btn"
+						onclick="closeEditPopup()">
+						<i class="fas fa-times"></i> Close
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<!-- 	<footer>
+		<p>&copy; 2025 User Management System</p>
+	</footer> -->
+
+	<script>
+    // تحميل الترجمات من ملف JSON
+    fetch('translations.json')
+      .then(response => response.json())
+      .then(translations => {
+        const langSelect = document.getElementById("langSelect");
+
+        // عند تغيير اللغة من القائمة
+        langSelect.addEventListener("change", function() {
+          const selectedLang = langSelect.value;
+          translatePage(selectedLang, translations);
+        });
+
+        // الترجمة الافتراضية عند تحميل الصفحة
+        translatePage(langSelect.value, translations);
+
+        // وظيفة لترجمة النصوص في الصفحة
+        function translatePage(lang, translations) {
+          document.querySelectorAll('[data-lang]').forEach(function(element) {
+            const key = element.getAttribute('data-lang');
+            if (translations[lang] && translations[lang][key]) {
+              element.textContent = translations[lang][key];
+            }
+          });
+        }
+      })
+      .catch(error => console.log('Error loading JSON:', error));
+ // ترجمة placeholder
+    document.querySelectorAll('[data-lang-placeholder]').forEach(function(element) {
+      const key = element.getAttribute('data-lang-placeholder');
+      if (translations[lang] && translations[lang][key]) {
+        element.placeholder = translations[lang][key];
+      }
+    });
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,39 @@
+
+
+
+{
+  "ar": {
+    "welcome": "مرحباً بك في فالكُن",
+    "home": "الرئيسية",
+    "games": "الألعاب",
+    "about": "عن المتجر",
+    "contact": "اتصل بنا",
+    "add_user": "اضافة مستخدم",
+      "add_game": "اضافة لعبة",
+      "settings": "الإعدادات",
+          "falcon_help": "نحن في Falcon نساعدك على اكتشاف وتجربة ألعاب مبتكرة من المطورين المحليين",
+           "discover_local_games": "اكتشف أفضل الألعاب المحلية",
+           "discover_games": "اكتشف الألعاب",
+           "support_store": "ادعم المتجر",
+    "search_placeholder": "ابحث عن لعبتك المفضلة..."
+  
+  },
+  
+  "en": {
+    "welcome": "Welcome to Falcon",
+    "home": "Home",
+    "games": "Games",
+    "about": "About Store",
+    "contact": "Contact Us",
+    "add_user": "Add User",
+    "add_game": "Add Game",
+    "add_rules": "Add Rules",
+      "settings": "Settings",
+       "falcon_help": "At Falcon, we help you discover and experience innovative games from local developers",
+        "discover_local_games": "Discover the best local games",
+        "discover_games": "Discover Games",
+        "support_store": "Support the Store",
+    "search_placeholder": "Search for your favorite game..."
+    
+  }
+}

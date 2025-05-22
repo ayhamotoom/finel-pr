@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تفاصيل اللعبة</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #fff;
+            font-family: sans-serif;
+            line-height: 1.5;
+            direction: rtl;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #1c1c1c;
+            text-align: center;
+            padding: 20px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        header h1 {
+            color: #ff9800;
+            font-size: 40px;
+        }
+
+        #game-details {
+            padding: 50px 20px;
+            background-color: #333;
+            max-width: 900px;
+            margin: 50px auto;
+            border-radius: 8px;
+            display: none; /* سيتم إظهاره عبر JavaScript */
+        }
+
+        #game-details h2 {
+            font-size: 2.5em;
+            color: #ff9800;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        #game-detail {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        #game-detail img {
+            width: 300px;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .game-info {
+            flex: 1;
+            color: #fff;
+        }
+
+        .game-info h3 {
+            font-size: 2em;
+            color: #ff9800;
+            margin-bottom: 20px;
+        }
+
+        .game-info p {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        .rating {
+            font-size: 1.5em;
+            color: #ff9800;
+        }
+
+        footer {
+            background-color: #1c1c1c;
+            text-align: center;
+            padding: 20px;
+            font-size: 16px;
+            color: #fff;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Falcon - تفاصيل اللعبة</h1>
+    </header>
+
+    <section id="game-details">
+        <h2>تفاصيل اللعبة</h2>
+        <div id="game-detail">
+            <img src="" alt="صورة اللعبة" id="game-image-display">
+            <div class="game-info">
+                <h3 id="game-title-display"></h3>
+                <p id="game-type-display"></p>
+                <p id="game-desc-display"></p>
+                <div class="rating" id="game-rating-display"></div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Falcon. جميع الحقوق محفوظة.</p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const games = JSON.parse(localStorage.getItem("games")) || [];
+            const selectedIndex = localStorage.getItem("selectedGame");
+
+            if (selectedIndex === null || !games[selectedIndex]) {
+                document.getElementById("game-details").innerHTML = "<p>لم يتم العثور على تفاصيل اللعبة.</p>";
+                return;
+            }
+
+            const game = games[selectedIndex];
+
+            document.getElementById("game-image-display").src = game.image;
+            document.getElementById("game-title-display").textContent = game.title;
+            document.getElementById("game-type-display").textContent = "النوع: " + game.type;
+            document.getElementById("game-desc-display").textContent = "الوصف: " + game.description;
+
+            const stars = "★".repeat(game.rating) + "☆".repeat(5 - game.rating);
+            document.getElementById("game-rating-display").textContent = "التقييم: " + stars;
+
+            document.getElementById("game-details").style.display = "block";
+        });
+    </script>
+
+</body>
+</html>

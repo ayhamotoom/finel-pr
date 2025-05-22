@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Game Management</title>
+<link rel="stylesheet" th:href="@{/style.css}">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+img {
+	max-width: 200px;
+	height: auto;
+	border-radius: 5px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+	background-repeat: no-repeat;
+}
+</style>
+<script>
+	function openCreatePopup() {
+		document.getElementById("editGameId").value = "";
+		document.getElementById("editName").value = "";
+		document.getElementById("editDescription").value = "";
+		document.getElementById("editReleaseDate").value = "";
+		document.getElementById("editCategory").value = "";
+		document.getElementById("editStudio").value = "";
+
+		document.getElementById("editPopup").style.display = "flex";
+		document.getElementById("addGameBtn").style.display = "block";
+		document.getElementById("saveGameBtn").style.display = "none";
+	}
+
+	function openEditPopup(id, name, desc, date, cat, studio) {
+		document.getElementById("editGameId").value = id;
+		document.getElementById("editName").value = name;
+		document.getElementById("editDescription").value = desc;
+		document.getElementById("editReleaseDate").value = date;
+		document.getElementById("editCategory").value = cat;
+		document.getElementById("editStudio").value = studio;
+
+		document.getElementById("editPopup").style.display = "flex";
+		document.getElementById("addGameBtn").style.display = "none";
+		document.getElementById("saveGameBtn").style.display = "block";
+	}
+
+	function closeEditPopup() {
+		document.getElementById("editPopup").style.display = "none";
+	}
+</script>
+</head>
+<body>
+	<header>
+		<div class="logo">
+			<h1 class="Falcon">
+				<a href="home" id="Falcon">Falcon</a>
+			</h1>
+			<p id="paragrph">دعم الألعاب المحلية للعالمية</p>
+		</div>
+		<nav class="navbar">
+			<ul>
+				<li><a href="home" data-lang="home">الرئيسية</a></li>
+				<li><a href="Newgames" data-lang="games">الألعاب</a></li>
+				<li><a href="about" data-lang="about">عن المتجر</a></li>
+				<li><a href="contact" data-lang="contact">اتصل بنا</a></li>
+				<li class="dropdown"><a href="addUser" data-lang="settings">الإعدادات</a>
+					<div class="dropdown-content">
+						<a href="addUser" data-lang="addUser">اضافة مستخدم</a> <a
+							href="addGame" data-lang="addGame">اضافة لعبة</a> <a
+							href="addRules" data-lang="addRules">اضافة قواعد</a>
+					</div></li>
+			</ul>
+		</nav>
+
+		<p data-lang="welcome">مرحباً بك في فالكُن</p>
+
+		<div style="position: relative; display: inline-block;">
+			<input type="text" id="searchInput" placeholder="ابحث هنا..."
+				style="width: 300px;">
+			<div id="suggestions"
+				style="background: #fff; color: #000; position: absolute; top: 100%; right: 0; z-index: 10; width: 100%; border-radius: 8px; max-height: 200px; overflow-y: auto; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);">
+			</div>
+		</div>
+		<select id="langSelect">
+			<option value="ar">العربية</option>
+			<option value="en">English</option>
+		</select>
+
+	</header>
+	<main>
+		<h2>Game Management</h2>
+		<button class="btn" onclick="openCreatePopup()">
+			<i class="fas fa-gamepad"></i> Create Game
+		</button>
+
+		<table>
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Name</th>
+					<th>Description</th>
+					<th>Release Date</th>
+					<th style="display: none;">Category</th>
+					<th>Category Name</th>
+					<th>Studio Name</th>
+					<th style="display: none;">Studio</th>
+					<th>Image</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="game : ${games}">
+					<td th:text="${game.gameId}"></td>
+					<td th:text="${game.name}"></td>
+					<td th:text="${game.description}"></td>
+					<td th:text="${#dates.format(game.releaseDate, 'yyyy-MM-dd')}"></td>
+					<td style="display: none;" th:text="${game.category}"></td>
+					<td th:text="${categoryMapper.getCategoryName(game.category)}"></td>
+					<td th:text="${studioMapper.getStudioName(game.studio)}"></td>
+					<td style="display: none;" th:text="${game.studio}"></td>
+					<td><img th:src="@{'/addGame/image/' + ${game.gameId}}"
+						alt="Game Image" width="100" height="100" /></td>
+					<td>
+						<button class="action-btn edit"
+							th:attr="onclick=|openEditPopup('${game.gameId}', '${game.name}', '${game.description}', '${#dates.format(game.releaseDate, 'yyyy-MM-dd')}', '${game.category}', '${game.studio}')|">
+							<i class="fas fa-edit"></i> Edit
+						</button> <a th:href="@{'/addGame/delete/' + ${game.gameId}}"
+						onclick="return confirm('Are you sure?')"
+						class="action-btn delete"> <i class="fas fa-trash-alt"></i>
+							Delete
+					</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</main>
+
+	<div id="editPopup" class="popup">
+		<div class="popup-content">
+			<h2>Game Form</h2>
+			<form th:action="@{/addGame/save}" method="post"
+				enctype="multipart/form-data">
+				<input type="hidden" id="editGameId" name="gameId" />
+
+				<div class="form-row">
+					<label>Name:</label> <input type="text" id="editName" name="name"
+						required /> <label>Description:</label> <input type="text"
+						id="editDescription" name="description" />
+				</div>
+
+				<div class="form-row">
+					<label>Release Date:</label> <input type="date"
+						id="editReleaseDate" name="releaseDate" /> <label>Category:</label>
+					<select id="editCategory" name="category">
+						<option value="1">Action</option>
+						<option value="2">Role-Playing (RPG)</option>
+						<option value="3">Adventure</option>
+						<option value="4">Simulation</option>
+						<option value="5">Strategy</option>
+						<option value="6">Sports</option>
+						<option value="7">Racing</option>
+						<option value="8">Shooter</option>
+						<option value="9">Puzzle</option>
+						<option value="10">Survival Horror</option>
+					</select>
+				</div>
+
+				<div class="form-row">
+					<label>Studio:</label> <select id="editStudio" name="studio">
+						<option value="1">Naughty Dog</option>
+						<option value="2">Rockstar Games</option>
+						<option value="3">Ubisoft</option>
+						<option value="4">Bethesda Game Studios</option>
+						<option value="5">CD Projekt Red</option>
+						<option value="6">FromSoftware</option>
+						<option value="7">Blizzard Entertainment</option>
+						<option value="8">Nintendo</option>
+						<option value="9">Square Enix</option>
+						<option value="10">Epic Games</option>
+					</select>
+				</div>
+				<div class="form-row">
+					<label>Game Image:</label> <input type="file" name="imageFile"
+						accept="image/png, image/jpeg" />
+				</div>
+				<div class="form-actions">
+					<button type="submit" class="btn" id="addGameBtn"
+						style="display: none;">
+						<i class="fas fa-plus"></i> Add Game
+					</button>
+					<button type="submit" class="btn" id="saveGameBtn"
+						style="display: none;">
+						<i class="fas fa-save"></i> Save
+					</button>
+					<button type="button" class="btn cancel-btn"
+						onclick="closeEditPopup()">
+						<i class="fas fa-times"></i> Close
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+
+</body>
+</html>
